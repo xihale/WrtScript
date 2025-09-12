@@ -33,12 +33,40 @@ generate_mac() {
 ```bash
 # Cloudflare API 相关信息
 # Cloudflare API 端点，替换为实际的 API URL
-CF_API=""
+CF_API="https://api.cloudflare.com/client/v4/zones/{{zone_id}}/dns_records/{{record_id}}"
 # Cloudflare API Token，换成你自己的
 CF_TOKEN=""
 # Cloudflare 域名，换成你自己的，这个是你要访问的域名
 CF_DOMAIN=""
 ```
+
+`zone_id` 是你的 Cloudflare 的区域 ID，在域名的概览下就有
+
+![](https://bili33.eu.org/file/VkGuUz9S.png)
+
+`record_id` 是你预添加记录的时候，在网络请求中返回回来的 id，通过控制台的网络选项卡找 `dns_records` 获得
+
+![](https://bili33.eu.org/file/nX7K5Eri.png)
+
+设置完之后，每次更新会对这一条特定的记录进行更新，而不是删除/添加记录，敬请注意这一点
+
+需要更改记录类型的话，自己修改一下请求体
+
+```bash
+# 构建 Cloudflare API 请求的 JSON 数据
+DATA=$(cat <<EOF
+{
+  "type": "A",
+  "name": "$CF_DOMAIN",
+  "content": "$INTERNAL_IP",
+  "ttl": 120,
+  "proxied": false
+}
+EOF
+)
+```
+
+例如，把 `A` 更换为 `AAAA`，就可以改为一条 `AAAA` 记录（当然了，你的 `content` 也要跟着换）
 
 平时使用直接 `./ipv4.sh` 运行就行
 
@@ -67,3 +95,4 @@ Openwrt 备份脚本，注意自己调整备份文件保存的位置，建议使
 - `--iptables-backup` 备份 iptables 的配置
 - `--firewall-backup` 备份防火墙配置
 - `--all-backup` 运行上面全部备份
+
