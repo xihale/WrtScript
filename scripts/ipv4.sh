@@ -2,13 +2,13 @@
 
 # Cloudflare API 相关信息
 # Cloudflare API 端点，替换为实际的 API URL
-CF_API=""
+CF_API="https://api.cloudflare.com/client/v4/zones/{{zone_id}}/dns_records/{{record_id}}"
 # Cloudflare API Token，换成你自己的
 CF_TOKEN=""
 # Cloudflare 域名，换成你自己的，这个是你要访问的域名
 CF_DOMAIN=""
 
-# 获取 PPPoE 拨号的内网 IP 地址（假设接口名称为 pppoe-wan，根据实际情况修改）
+# 获取 PPPoE 拨号的内网 IP 地址
 INTERNAL_IP=$(ip -4 addr show pppoe-wan | awk '/inet/ {print $2}' | cut -d'/' -f1 | head -n 1)
 
 # 判断是否获取到 IP 地址
