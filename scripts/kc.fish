@@ -10,7 +10,7 @@ set check_url "http://connect.rom.miui.com/generate_204"
 
 function reconnect
     echo "Network appears to be down... Reconnecting..."
-    /root/generate_mac.sh
+    ./generate_mac.sh
 
     while true
         set gateway (ip route | grep "default via" | awk '{print $3}')
@@ -21,9 +21,9 @@ function reconnect
         sleep 1
     end
 
-    /root/login.fish
+    ./login.fish
     # sleep 25
-    # /root/ip.fish
+    # ./ip.fish
 
     echo "Waiting for network to stabilize..."
     echo "Attempting to get new gateway address after reconnection..."
